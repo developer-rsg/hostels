@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Details</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">PG Hostel Booking</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Hostel Details</h2>
+        <div id="hostel-details"></div>
+    </div>
+
+    <script>
+        function loadHostelDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const hostelId = params.get("id");
+
+            fetch(`http://localhost:8080/api/hostels/${hostelId}`)
+                .then(response => response.json())
+                .then(hostel => {
+                    document.getElementById("hostel-details").innerHTML = `
+                        <div class="card p-4">
+                            <img src="${hostel.imageUrl}" class="img-fluid" alt="Hostel Image">
+                            <h3>${hostel.name}</h3>
+                            <p><strong>Location:</strong> ${hostel.address}, ${hostel.location}</p>
+                            <p><strong>Price:</strong> ₹${hostel.price}</p>
+                            <button class="btn btn-success" onclick="bookHostel(${hostel.id})">Book Now</button>
+                        </div>`;
+                });
+        }
+
+        loadHostelDetails();
+    </script>
+</body>
+</html>
+
